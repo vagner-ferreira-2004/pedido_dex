@@ -17,4 +17,13 @@ def updateStatusController(id_object):
     except ServiceError as error:
         return jsonify({"error": str(error)}), error.status_code
 
+def updateFoundDateController(id_object):
+    try:
+        data = UpdateFoundDateSchema.model_validate(request.get_json(silent=True) or {})
+        update = updateFoundDate(id_object, g.user_id, data.model_dump())
+        return jsonify(update), 200
+    except ValidationError as error:
+        return jsonify({"errors": error.errors()}), 400
+    except ServiceError as error:
+        return jsonify({"error": str(error)}), error.status_code
 
